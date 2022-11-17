@@ -39,6 +39,7 @@ function modalWindowOpen(evt) {
       class="gallery__image"
       src=${evt.target.dataset.source}
       alt=${evt.target.alt}
+      style="height:90vh; object-fit:contain;"
     />
     </div>
 `,
