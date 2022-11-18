@@ -33,42 +33,23 @@ const onGalleryImageClick = (evt) => {
 };
 function modalWindowOpen(evt) {
   const instance = basicLightbox.create(
-    `
-    <div class="modal">
-        <img
+    `<img
       class="gallery__image"
       src=${evt.target.dataset.source}
       alt=${evt.target.alt}
       style="height:90vh; object-fit:contain;"
-    />
-    </div>
-`,
+    />`,
     {
-      onShow: (instance) => {
-        if (!instance.visible()) {
-          instance.element().addEventListener("click", instance.close); //{ once: true }
-          document.addEventListener(
-            "keydown",
-            (event) => {
-              if (event.key === "Escape") {
-                instance.close();
-              }
-            },
-            { once: true }
-          );
-          /* { once: true } - once (Optional) A boolean value indicating that the listener 
-          should be invoked at most once after being added.
-          If true, the listener would be automatically removed when invoked.
-          If not specified, defaults to false. 
-          https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener */
-        }
-      },
-      onClose: (instance) => {
-        instance.element().removeEventListener("click", instance.close);
-      },
+      onShow: () => document.addEventListener("keydown", onEscapePress),
+      onClose: () => document.removeEventListener("keydown", onEscapePress),
     }
   );
   instance.show();
+  function onEscapePress(event) {
+    if (event.key === "Escape") {
+      instance.close();
+    }
+  }
 }
 //check on browser if it supports lazyloading
 if ("loading" in HTMLImageElement.prototype) {
