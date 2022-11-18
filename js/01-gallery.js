@@ -45,21 +45,32 @@ function modalWindowOpen(evt) {
 `,
     {
       onShow: (instance) => {
-        instance.element().querySelector("div.modal").onclick = instance.close;
-        document.addEventListener(
-          "keydown",
-          (event) => {
-            if (event.key === "Escape") {
-              instance.close();
-            }
-          },
-          { once: true }
-        );
+        if (!instance.visible()) {
+          instance.element().addEventListener("click", instance.close); //{ once: true }
+          document.addEventListener(
+            "keydown",
+            (event) => {
+              if (event.key === "Escape") {
+                instance.close();
+              }
+            },
+            { once: true }
+          );
+          /* { once: true } - once (Optional) A boolean value indicating that the listener 
+          should be invoked at most once after being added.
+          If true, the listener would be automatically removed when invoked.
+          If not specified, defaults to false. 
+          https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener */
+        }
+      },
+      onClose: (instance) => {
+        instance.element().removeEventListener("click", instance.close);
       },
     }
   );
   instance.show();
 }
+//check on browser if it supports lazyloading
 if ("loading" in HTMLImageElement.prototype) {
   const imgArray = document.querySelectorAll('img[loading = "lazy"]');
   imgArray.forEach((img) => (img.src = img.dataset.src));

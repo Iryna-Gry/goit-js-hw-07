@@ -21,6 +21,7 @@ gallery.on("show.simplelightbox", function () {
 gallery.on("error.simplelightbox", function (e) {
   console.log(e);
 });
+//check on browser if it supports lazyloading
 if ("loading" in HTMLImageElement.prototype) {
   const imgArray = document.querySelectorAll('img[loading = "lazy"]');
   imgArray.forEach((img) => (img.src = img.dataset.src));
@@ -28,9 +29,6 @@ if ("loading" in HTMLImageElement.prototype) {
   const script = document.createElement("script");
   script.src =
     "https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js";
-  script.integrity =
-    "sha512-q583ppKrCRc7N5O0n2nzUiJ+suUv7Et1JGels4bXOaMFQcamPk9HjdUknZuuFjBNs7tsMuadge5k9RzdmO+1GQ==";
-  script.crossorigin = "anonymous";
-  script.referrerpolicy = "no-referrer";
+  script.type = "module";
   document.body.appendChild(script);
 }
